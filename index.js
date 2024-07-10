@@ -11,7 +11,7 @@ app.use(express.json())
 //LZSnVuhmg1eRLT0D
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.acyxhfp.mongodb.net/?appName=Cluster0`;
 
@@ -39,11 +39,19 @@ async function run() {
             res.send(result)
         })
 
+
         app.post('/coffees', async (req, res) => {
             const user = req.body;
             console.log(user);
             const result = await coffeeList.insertOne(user);
             res.send(result)
+        })
+
+        app.delete('/coffees/:id',async(req , res)=>{
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)};
+            const result = await coffeeList.deleteOne(query);
+            res.send(result);
         })
 
 
